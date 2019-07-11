@@ -39,7 +39,7 @@ services:
       MYSQL_PASSWORD: 1234
       DATABASE_HOST: eventos-db
     ports:
-      - "3301:3306"
+      - "3301:3301"
 
   eventos-ms:
     image: alejosebasp/eventos_eventos-ms:latest
@@ -67,7 +67,7 @@ services:
       MYSQL_PASSWORD: 1234
       DATABASE_HOST: login-db
     ports:
-      - "3303:3306"
+      - "3303:3303"
 
   login-ms:
     image: alejosebasp/login-ms:latest
@@ -113,7 +113,7 @@ services:
       MYSQL_PASSWORD: 1234
       DATABASE_HOST: promociones-db
     ports:
-      - "3302:3306"
+      - "3302:3302"
 
   promociones-ms:
     image: alejosebasp/promociones-ms:latest
