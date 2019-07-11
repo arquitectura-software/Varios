@@ -1,0 +1,244 @@
+version: '2'
+ 
+services:
+
+  infodestinations-db:
+    image: mysql:5.7
+    container_name: Destinos-DB
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+      
+  infodestinations-ms:
+    image: jucrodriguezpu/breaktime-destinations:destinations
+    container_name: Destinos
+    command: bundle exec rails s -b 0.0.0.0
+    environment:
+      RAILS_ENV: development
+      RAILS_MAX_THREADS: 5
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_DATABASE: infodestinations_image_db
+      DB_PORT: 3306
+      DB_HOST: infodestinations-db
+    ports:
+      - "3000:3000"
+    links:
+      - infodestinations-db
+
+  eventos-db:
+    image: alejosebasp/eventos_eventos-db:latest
+    container_name: Eventos-DB
+    environment:
+      MYSQL_DATABASE: Events
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: 1234
+      DATABASE_HOST: eventos-db
+    ports:
+      - "3301:3306"
+
+  eventos-ms:
+    image: alejosebasp/eventos_eventos-ms:latest
+    container_name: Eventos
+    environment:
+      NODE_ENV: production
+      DATABASE_HOST: eventos-db
+      MYSQL_PORT: 3301
+      MYSQL_DATABASE: Events
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3003:3000"
+    depends_on:
+      - eventos-db
+    restart: on-failure
+
+  login-db:
+    image: alejosebasp/login-db:latest
+    container_name: Login-DB
+    environment:
+      MYSQL_DATABASE: Ident
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: 1234
+      DATABASE_HOST: login-db
+    ports:
+      - "3303:3306"
+
+  login-ms:
+    image: alejosebasp/login-ms:latest
+    container_name: Login
+    environment:
+      NODE_ENV: production
+      DATABASE_HOST: login-db
+      MYSQL_PORT: 3303
+      MYSQL_DATABASE: Ident
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "4000:4000"
+    depends_on:
+      - login-db
+    restart: on-failure
+
+  notifications-ms:
+    container_name: notifications-ms
+    container_name: Notifications
+    image: jucrodriguezpu/breaktime-notifications:notifications
+    restart: always
+    environment:
+      NODE_ENV: production
+    ports:
+      - "3002:3000"
+    links:
+      - notifications-db
+
+  notifications-db:
+    container_name: notifications-db
+    image: mongo
+    ports:
+      - "27017:27017"
+
+  promociones-db:
+    image: alejosebasp/promociones_db:latest
+    container_name: Promociones-DB
+    environment:
+      MYSQL_DATABASE: Promociones
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: 1234
+      DATABASE_HOST: promociones-db
+    ports:
+      - "3302:3306"
+
+  promociones-ms:
+    image: alejosebasp/promociones-ms:latest
+    container_name: Promociones
+    environment:
+      NODE_ENV: production
+      DATABASE_HOST: promociones-db
+      MYSQL_PORT: 3302
+      MYSQL_DATABASE: Promociones
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3004:3004"
+    depends_on:
+      - promociones-db
+    restart: on-failure
+
+  breaktime-ldap:
+    image: osixia/openldap:1.1.8
+    container_name: LDAP
+    environment:
+      COMPOSE_HTTP_TIMEOUT: 200
+      LDAP_LOG_LEVEL: "256"
+      LDAP_ORGANISATION: "Software Architecture"
+      LDAP_DOMAIN: "arqsoft.unal.edu.co"
+      LDAP_BASE_DN: ""
+      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_CONFIG_PASSWORD: "config"
+      LDAP_READONLY_USER: "false"
+      #LDAP_READONLY_USER_USERNAME: "readonly"
+      #LDAP_READONLY_USER_PASSWORD: "readonly"
+      LDAP_BACKEND: "hdb"
+      LDAP_TLS: "true"
+      LDAP_TLS_CRT_FILENAME: "ldap.crt"
+      LDAP_TLS_KEY_FILENAME: "ldap.key"
+      LDAP_TLS_CA_CRT_FILENAME: "ca.crt"
+      LDAP_TLS_ENFORCE: "false"
+      LDAP_TLS_CIPHER_SUITE: "SECURE256:-VERS-SSL3.0"
+      LDAP_TLS_PROTOCOL_MIN: "3.1"
+      LDAP_TLS_VERIFY_CLIENT: "demand"
+      LDAP_REPLICATION: "false"
+      LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
+      LDAP_SSL_HELPER_PREFIX: "ldap"
+    tty: true
+    stdin_open: true
+    volumes:
+      - /var/lib/ldap
+      - /etc/ldap/slapd.d
+      - /container/service/slapd/assets/certs/
+    ports:
+      - "389:389"
+      - "636:636"
+    hostname: "arqsoft.org"
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    container_name: phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: breaktime-ldap
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "8085:80"
+    links:
+      - breaktime-ldap
+
+  api-gateway:
+    image: jucrodriguezpu/breaktime-api:api
+    container_name: api-gateway
+    environment:
+      PORT: '5000'
+      SHOW_URLS: 'true'
+
+      # Destinos
+      DESTINATIONS_URL: '104.198.249.5'
+      DESTINATIONS_PORT: '3000'
+      DESTINATIONS_ENTRY: 'destinations'
+      
+      # Eventos
+      EVENTS_URL: '104.198.249.5'
+      EVENTS_PORT: '3003'
+      EVENTS_ENTRY: 'events'
+      RESERVATIONS_URL: '104.198.249.5'
+      RESERVATIONS_PORT: '3003'
+      RESERVATIONS_ENTRY: 'reservations'
+      
+      # Login
+      USERS_URL: '104.198.249.5'
+      USERS_PORT: '4000'
+      USERS_ENTRY: 'users'
+      PASSENGERS_URL: '104.198.249.5'
+      PASSENGERS_PORT: '4000'
+      PASSENGERS_ENTRY: 'passengers'
+      CREWS_URL: '104.198.249.5'
+      CREWS_PORT: '4000'
+      CREWS_ENTRY: 'crews'
+
+      # Notifications
+      NOTIFICATIONS_URL: '104.198.249.5'
+      NOTIFICATIONS_PORT: '3002'
+      NOTIFICATIONS_ENTRY: 'notifications'
+      
+      # Promociones
+      PROMOCIONES_URL: '104.198.249.5'
+      PROMOCIONES_PORT: '3004'
+      PROMOCIONES_ENTRY: 'promociones'
+      TIENDAS_URL: '104.198.249.5'
+      TIENDAS_PORT: '3004'
+      TIENDAS_ENTRY: 'tiendas'
+
+      # Servidor LDAP
+      LDAP_URL:  '104.198.249.5'
+      LDAP_PORT: '4000'
+      LDAP_ENTRYA:  'auth'
+      LDAP_ENTRYAa: 'authAdmin'
+      LDAP_ENTRYAd: 'add'
+      LDAP_ENTRYAda: 'addAdmin'
+      LDAP_ENTRYV: 'validate'
+
+    ports:
+      - "5000:5000"
+
+  breaktime:
+    image: jucrodriguezpu/breaktime-fe:fe
+    container_name: BreakTime
+    environment:
+      NODE_ENV: production
+    ports:
+      - "3005:3000"
