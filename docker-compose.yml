@@ -220,7 +220,7 @@ services:
       - '5000:5000'
 
   breaktime:
-    image: alejosebasp/breaktime:final
+    image: jucrodriguezpu/breaktime-fe:fe
     environment:
       NODE_ENV: production
     ports:
