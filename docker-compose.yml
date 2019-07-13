@@ -79,7 +79,7 @@ services:
 
   notifications-ms:
     container_name: notifications-ms
-    image: jucrodriguezpu/breaktime-notifications:notifications
+    image: alejosebasp/notifier-ms:final
     restart: always
     environment:
       NODE_ENV: production
@@ -89,7 +89,7 @@ services:
       - notifications-db
 
   notifications-db:
-    image: jucrodriguezpu/breaktime-notifications:notifications
+    image: alejosebasp/notifier-db:final
     ports:
       - "27017:27017"
 
