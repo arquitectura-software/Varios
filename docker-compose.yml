@@ -12,7 +12,7 @@ services:
       DB_PASSWORD: root
       DB_DATABASE: infodestinations_image_db
       DB_PORT: 3306
-      DB_HOST: 35.173.204.155
+      DB_HOST: infodestinations-db
     ports:
       - "3000:3000"
     links:
@@ -34,16 +34,15 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_USER: mysql
       MYSQL_PASSWORD: 1234
-      DATABASE_HOST: eventos-db
     ports:
       - 3307:3306
 
   eventos-ms:
-    image: jucrodriguezpu/breaktime-events:events
+    image: alejosebasp/eventos_eventos-ms:latest
     environment:
       NODE_ENV: production
-      DATABASE_HOST: 35.173.204.155
-      MYSQL_PORT: 3307
+      DATABASE_HOST: eventos-db
+      MYSQL_PORT: 3306
       MYSQL_DATABASE: Events
       MYSQL_USER: mysql
       MYSQL_PASSWORD: 1234
@@ -60,16 +59,15 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_USER: mysql
       MYSQL_PASSWORD: 1234
-      DATABASE_HOST: login-db
     ports:
       - 3308:3306
 
   login-ms:
-    image: jucrodriguezpu/breaktime-login:login
+    image: alejosebasp/login-ms:final
     environment:
       NODE_ENV: production
-      DATABASE_HOST: 35.173.204.155
-      MYSQL_PORT: 3308
+      DATABASE_HOST: login-db
+      MYSQL_PORT: 3306
       MYSQL_DATABASE: Ident
       MYSQL_USER: mysql
       MYSQL_PASSWORD: 1234
@@ -102,16 +100,15 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_USER: mysql
       MYSQL_PASSWORD: 1234
-      DATABASE_HOST: promociones-db
     ports:
       - 3309:3306
 
   promociones-ms:
-    image: jucrodriguezpu/breaktime-promos:promos
+    image: alejosebasp/promociones-ms:latest
     environment:
       NODE_ENV: production
-      DATABASE_HOST: 35.173.204.155
-      MYSQL_PORT: 3309
+      DATABASE_HOST: promociones-db
+      MYSQL_PORT: 3306
       MYSQL_DATABASE: Promociones
       MYSQL_USER: mysql
       MYSQL_PASSWORD: 1234
@@ -132,8 +129,6 @@ services:
       LDAP_ADMIN_PASSWORD: "admin"
       LDAP_CONFIG_PASSWORD: "config"
       LDAP_READONLY_USER: "false"
-      #LDAP_READONLY_USER_USERNAME: "readonly"
-      #LDAP_READONLY_USER_PASSWORD: "readonly"
       LDAP_BACKEND: "hdb"
       LDAP_TLS: "true"
       LDAP_TLS_CRT_FILENAME: "ldap.crt"
@@ -176,44 +171,44 @@ services:
       SHOW_URLS: 'true'
 
       # Destinos
-      DESTINATIONS_URL: '35.173.204.155'
+      DESTINATIONS_URL: infodestinations-ms
       DESTINATIONS_PORT: '3000'
       DESTINATIONS_ENTRY: 'destinations'
       
       # Eventos
-      EVENTS_URL: '35.173.204.155'
+      EVENTS_URL: eventos-ms
       EVENTS_PORT: '3003'
       EVENTS_ENTRY: 'events'
-      RESERVATIONS_URL: '35.173.204.155'
+      RESERVATIONS_URL: eventos-ms
       RESERVATIONS_PORT: '3003'
       RESERVATIONS_ENTRY: 'reservations'
       
       # Login
-      USERS_URL: '35.173.204.155'
+      USERS_URL: login-ms
       USERS_PORT: '4000'
       USERS_ENTRY: 'users'
-      PASSENGERS_URL: '35.173.204.155'
+      PASSENGERS_URL: login-ms
       PASSENGERS_PORT: '4000'
       PASSENGERS_ENTRY: 'passengers'
-      CREWS_URL: '35.173.204.155'
+      CREWS_URL: login-ms
       CREWS_PORT: '4000'
       CREWS_ENTRY: 'crews'
 
       # Notifications
-      NOTIFICATIONS_URL: '35.173.204.155'
+      NOTIFICATIONS_URL: notifications-ms
       NOTIFICATIONS_PORT: '3002'
       NOTIFICATIONS_ENTRY: 'notifications'
       
       # Promociones
-      PROMOCIONES_URL: '35.173.204.155'
+      PROMOCIONES_URL: promociones-ms
       PROMOCIONES_PORT: '3004'
       PROMOCIONES_ENTRY: 'promociones'
-      TIENDAS_URL: '35.173.204.155'
+      TIENDAS_URL: promociones-ms
       TIENDAS_PORT: '3004'
       TIENDAS_ENTRY: 'tiendas'
 
       # Servidor LDAP
-      LDAP_URL:  '35.173.204.155'
+      LDAP_URL:  breaktime-ldap
       LDAP_PORT: '4000'
       LDAP_ENTRYA:  'auth'
       LDAP_ENTRYAa: 'authAdmin'
@@ -225,7 +220,7 @@ services:
       - '5000:5000'
 
   breaktime:
-    image: jucrodriguezpu/breaktime-fe:fe
+    image: alejosebasp/breaktime:final
     environment:
       NODE_ENV: production
     ports:
