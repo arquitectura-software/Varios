@@ -208,7 +208,7 @@ services:
       TIENDAS_ENTRY: 'tiendas'
 
       # Servidor LDAP
-      LDAP_URL:  breaktime-ldap
+      LDAP_URL:  login-ms
       LDAP_PORT: '4000'
       LDAP_ENTRYA:  'auth'
       LDAP_ENTRYAa: 'authAdmin'
