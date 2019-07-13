@@ -89,9 +89,9 @@ services:
       - notifications-db
 
   notifications-db:
-    image: alejosebasp/notifier-db:final
+    image: mongo
     ports:
-      - "27017:27017"
+      - 27017:27017
 
   promociones-db:
     image: jucrodriguezpu/breaktime-promos-db:promos-db
@@ -220,7 +220,7 @@ services:
       - '5000:5000'
 
   breaktime:
-    image: alejosebasp/breaktime:final
+    image: alejosebasp/breaktime:latest
     environment:
       NODE_ENV: production
     ports:
