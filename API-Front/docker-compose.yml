@@ -1,0 +1,66 @@
+version: '2'
+ 
+services:
+
+  api-gateway:
+    image: jucrodriguezpu/breaktime-api:api
+    container_name: api-gateway
+    environment:
+      PORT: '5000'
+      SHOW_URLS: 'true'
+
+      # Destinos
+      DESTINATIONS_URL: infodestinations-ms
+      DESTINATIONS_PORT: '3000'
+      DESTINATIONS_ENTRY: 'destinations'
+      
+      # Eventos
+      EVENTS_URL: eventos-ms
+      EVENTS_PORT: '3003'
+      EVENTS_ENTRY: 'events'
+      RESERVATIONS_URL: eventos-ms
+      RESERVATIONS_PORT: '3003'
+      RESERVATIONS_ENTRY: 'reservations'
+      
+      # Login
+      USERS_URL: login-ms
+      USERS_PORT: '4000'
+      USERS_ENTRY: 'users'
+      PASSENGERS_URL: login-ms
+      PASSENGERS_PORT: '4000'
+      PASSENGERS_ENTRY: 'passengers'
+      CREWS_URL: login-ms
+      CREWS_PORT: '4000'
+      CREWS_ENTRY: 'crews'
+
+      # Notifications
+      NOTIFICATIONS_URL: notifications-ms
+      NOTIFICATIONS_PORT: '3002'
+      NOTIFICATIONS_ENTRY: 'notifications'
+      
+      # Promociones
+      PROMOCIONES_URL: promociones-ms
+      PROMOCIONES_PORT: '3004'
+      PROMOCIONES_ENTRY: 'promociones'
+      TIENDAS_URL: promociones-ms
+      TIENDAS_PORT: '3004'
+      TIENDAS_ENTRY: 'tiendas'
+
+      # Servidor LDAP
+      LDAP_URL:  login-ms
+      LDAP_PORT: '4000'
+      LDAP_ENTRYA:  'auth'
+      LDAP_ENTRYAa: 'authAdmin'
+      LDAP_ENTRYAd: 'add'
+      LDAP_ENTRYAda: 'addAdmin'
+      LDAP_ENTRYV: 'validate'
+
+    ports:
+      - '5000:5000'
+
+  breaktime:
+    image: jucrodriguezpu/breaktime-fe:fe
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3005:3000
