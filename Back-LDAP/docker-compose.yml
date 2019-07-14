@@ -38,7 +38,7 @@ services:
       - 3307:3306
 
   eventos-ms:
-    image: alejosebasp/eventos_eventos-ms:latest
+    image: jucrodriguezpu/breaktime-events:events
     environment:
       NODE_ENV: production
       DATABASE_HOST: eventos-db
@@ -79,7 +79,7 @@ services:
 
   notifications-ms:
     container_name: notifications-ms
-    image: alejosebasp/notifier-ms:final
+    image: jucrodriguezpu/breaktime-notifications:notifications
     restart: always
     environment:
       NODE_ENV: production
@@ -104,7 +104,7 @@ services:
       - 3309:3306
 
   promociones-ms:
-    image: alejosebasp/promociones-ms:latest
+    image: jucrodriguezpu/breaktime-promos:promos
     environment:
       NODE_ENV: production
       DATABASE_HOST: promociones-db
