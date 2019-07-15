@@ -1,0 +1,93 @@
+# TODAS LAS QUERIES FUNCIONAN BIEN DESDE EL API GATEWAY EN EL LB-API-BREAKTIME http://104.198.249.5:81/graphiql
+
+# query{
+#   getUsers{
+#     id
+#     uname
+#     surname
+#     email
+#     passw
+#   }
+# }
+
+# query{
+#   getCrews{
+#     id
+#     id_user
+#     dependence
+#   }
+# }
+
+# query{
+#   getEvents{
+#     id
+#     name
+#     location
+#     date
+#     capacity
+#     audence
+#     description
+#     tipo
+#   }
+# }
+
+# query{
+#   getTiendas{
+#     id_tienda
+#     categoria
+#     ubicacion
+#     nombre
+#   }
+# }
+
+# query{
+#   getPassengers{
+#     id
+#     id_user
+#     birthdate
+#     email
+#     phone
+#   }
+# }
+
+# query{
+#   getPromociones{
+#     id_promocion
+#     id_tienda
+#     descripcion
+#     fecha_inicio
+#     fecha_fin
+#   }
+# }
+
+# query{
+#   getDestinations{
+#     id
+#     name
+#     weather
+#     description
+#     timezone
+#     cityimage
+#     landingtime
+#     boardingtime
+#   }
+# }
+
+# query{
+#   getReservations{
+#     id
+#     quantity
+#     id_user
+#     id_event
+#   }
+# }
+
+# query{
+#   getNotifications{
+#     id_persona
+#     tipo
+#     medio
+#     titulo
+#     descripcion
+#   }
+# }
