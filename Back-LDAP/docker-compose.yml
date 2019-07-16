@@ -47,7 +47,7 @@ services:
       MYSQL_USER: mysql
       MYSQL_PASSWORD: 1234
     ports:
-      - "3003:3000"
+      - "3003:3003"
     depends_on:
       - eventos-db
     restart: on-failure
@@ -113,7 +113,7 @@ services:
       MYSQL_USER: mysql
       MYSQL_PASSWORD: 1234
     ports:
-      - "3004:3000"
+      - "3004:3004"
     depends_on:
       - promociones-db
     restart: on-failure
