@@ -1,0 +1,4 @@
+api-gateway:
+  scale: 4
+breaktime:
+  scale: 4

@@ -1,0 +1,20 @@
+infodestinations-db:
+  scale: 4
+infodestinations-ms:
+  scale: 4
+eventos-db:
+  scale: 4
+eventos-ms:
+  scale: 4
+login-db:
+  scale: 4
+login-ms:
+  scale: 4
+notifications-db:
+  scale: 4
+notifications-ms:
+  scale: 4
+promociones-db:
+  scale: 4
+promociones-ms:
+  scale: 4
